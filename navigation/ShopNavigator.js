@@ -11,7 +11,7 @@ const ProductsNavigation = createStackNavigator({
     defaultNavigationOptions:{
         headerStyle: 
         {
-            backGroundColor: Colors.primary
+            backgroundColor: Colors.primary
         },
         headerTintColor: 'white'
     }
