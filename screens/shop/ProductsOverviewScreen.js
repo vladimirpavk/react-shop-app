@@ -2,65 +2,43 @@ import React from 'react';
 import {
     View,
     FlatList,
-    Text,
-    StyleSheet,
-    Image,
-    Button
+    StyleSheet
  } from 'react-native';
 
- import Colors from '../../constants/Colors';
+import { connect } from 'react-redux';
 
-import { connect, useSelector } from 'react-redux';
-
-const RenderItem = (props)=>{
-    console.log(props.item.imageUrl);
-
-    const ViewDetailsClicked = ()=>{
-        console.log('View Details clicked...');
-    }
-    
-    const ToCartClicked = ()=>{
-        console.log('To Cart clicked...');
-    }
-
-    return(
-        <View style={styles.renderItemContainer}>
-            <View style={styles.renderItemPic}>
-                <Image
-                    style={{flex:1}}
-                    source={{
-                        uri:props.item.imageUrl
-                    }}
-                />
-            </View>
-            <View style={styles.renderItemDetails}>
-                <Text style={{fontWeight: 'bold', marginBottom: 5}}>{props.item.title}</Text>
-                <Text style={{fontWeight: '100'}}>${props.item.price}</Text>
-                <View style={styles.renderItemButtons}>
-                    <Button
-                        style={styles.renderItemButton}
-                        title="View Details"
-                        onPress={()=>ViewDetailsClicked}
-                    />
-                    <Button
-                        style={styles.renderItemButton}
-                        title="To Cart"
-                        onPress={()=>ToCartClicked}
-                    />
-                </View>
-            </View>
-        </View>
-    );
-}
+import Colors from '../../constants/Colors';
+import ProductItem from '../../componenets/shop/ProductItem';
 
 const ProductsOverviewScreen = (props)=>{
-    console.log('ProductOverviewScreen...');
+    
+    const productToCartClicked = ()=>{
+        console.log('Product to cart clicked...');
+    }
+
+    const productDetailClicked = ()=>{
+        //console.log('Product detail clicked...');
+        //navigate to ProductDetailScreen
+        console.log(props);
+        props.navigation.navigate('ProductDetail', { param1: 'Vlada'});
+    }
+
     return(
         <View style={styles.container}>      
             <FlatList                
                 data={props.products}
                 keyExtractor={(item)=>item.id}
-                renderItem={(itemData)=><RenderItem item={itemData.item}></RenderItem>}
+                renderItem={
+                    (itemData)=>{
+                        return(
+                            <ProductItem
+                                item={itemData.item}
+                                viewDetailsClicked={()=>productDetailClicked()}
+                                toCartClicked={()=>productToCartClicked()}>
+                            </ProductItem>
+                            );
+                    }
+                }
             />
         </View>
     )
@@ -72,48 +50,11 @@ ProductsOverviewScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,     
-      borderColor: 'red',
-      borderWidth: 2,
+      flex: 1,
       paddingTop: 10,
       paddingLeft: 10,
       paddingRight: 10
-    },
-    renderItemContainer: {    
-        borderColor: 'green',
-        borderWidth: 1,
-        height: 300,
-        marginBottom: 20,
-        borderRadius: 10
-    },
-    renderItemPic:{
-        borderColor: 'blue',
-        borderWidth:2,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        height: '70%'
-    },
-    renderItemDetails:{
-        borderWidth: 2,
-        borderColor: 'blue',
-        height: '30%',
-        padding: 10,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    renderItemButtons:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderColor: 'red',
-        borderWidth: 2,
-        width: '100%'
-    },
-    renderItemButton:{
-        backgroundColor: Colors.primary
-    }
-
+    }    
   });
 
 const mapStateToProps = (state)=>{
