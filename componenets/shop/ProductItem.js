@@ -4,39 +4,43 @@ import {
     Image,
     Button,
     StyleSheet,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 
 import Colors from '../../constants/Colors';
 
 const ProductItem = (props)=>{   
     return(
-        <View style={styles.productItemContainer}>
-            <View style={styles.productItemPic}>
-                <Image
-                    style={{flex:1}}
-                    source={{
-                        uri:props.item.imageUrl
-                    }}
-                />
-            </View>
-            <View style={styles.productItemDetails}>
-                <Text style={{fontWeight: 'bold', marginBottom: 5}}>{props.item.title}</Text>
-                <Text style={{fontWeight: '100'}}>${props.item.price}</Text>
-                <View style={styles.productItemButtons}>
-                    <Button
-                        style={styles.productItemButton}
-                        title="View Details"
-                        onPress={props.viewDetailsClicked}
-                    />
-                    <Button
-                        style={styles.productItemButton}
-                        title="To Cart"
-                        onPress={props.toCartClicked}
+        <TouchableOpacity
+            onPress={props.viewDetailsClicked}>
+            <View style={styles.productItemContainer}>
+                <View style={styles.productItemPic}>
+                    <Image
+                        style={{flex:1}}
+                        source={{
+                            uri:props.item.imageUrl
+                        }}
                     />
                 </View>
+                <View style={styles.productItemDetails}>
+                    <Text style={{fontWeight: 'bold', marginBottom: 5}}>{props.item.title}</Text>
+                    <Text style={{fontWeight: '100'}}>${props.item.price}</Text>
+                    <View style={styles.productItemButtons}>
+                        <Button
+                            color={Colors.primary}
+                            title="View Details"
+                            onPress={props.viewDetailsClicked}
+                        />
+                        <Button
+                            color={Colors.primary}
+                            title="To Cart"
+                            onPress={props.toCartClicked}
+                        />
+                    </View>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -66,9 +70,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%'
-    },
-    productItemButton:{
-        backgroundColor: Colors.primary
     }
 })
 

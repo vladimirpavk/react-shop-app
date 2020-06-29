@@ -12,15 +12,18 @@ import ProductItem from '../../componenets/shop/ProductItem';
 
 const ProductsOverviewScreen = (props)=>{
     
-    const productToCartClicked = ()=>{
+    const productToCartClicked = (item)=>{
         console.log('Product to cart clicked...');
+        console.log(item);
     }
 
-    const productDetailClicked = ()=>{
-        //console.log('Product detail clicked...');
-        //navigate to ProductDetailScreen
-        console.log(props);
-        props.navigation.navigate('ProductDetail', { param1: 'Vlada'});
+    const productDetailClicked = (item)=>{
+        props.navigation.navigate('ProductDetail',
+            {
+                itemProps: item,
+                toCart: productToCartClicked
+            }
+        );
     }
 
     return(
@@ -33,7 +36,7 @@ const ProductsOverviewScreen = (props)=>{
                         return(
                             <ProductItem
                                 item={itemData.item}
-                                viewDetailsClicked={()=>productDetailClicked()}
+                                viewDetailsClicked={()=>productDetailClicked(itemData.item)}
                                 toCartClicked={()=>productToCartClicked()}>
                             </ProductItem>
                             );
