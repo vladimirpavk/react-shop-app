@@ -18,12 +18,13 @@ const ProductsOverviewScreen = (props)=>{
     }
 
     const productDetailClicked = (item)=>{
-        props.navigation.navigate('ProductDetail',
-            {
+        props.navigation.navigate({
+            routeName: 'ProductDetail',
+            params: {
                 itemProps: item,
                 toCart: productToCartClicked
             }
-        );
+        });
     }
 
     return(

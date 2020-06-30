@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
     View,
@@ -13,6 +13,14 @@ import Colors from '../../constants/Colors';
 const ProductsDetailScreen = (props)=>{    
     const product = props.navigation.getParam('itemProps');
     const toCart = props.navigation.getParam('toCart');
+    useEffect(
+        ()=>{
+            props.navigation.setParams({
+                productTitle: product.title
+            });
+        }, [props.navigation]
+    );
+  
 
     return(
         <View style={styles.container}>
@@ -39,6 +47,12 @@ const ProductsDetailScreen = (props)=>{
             </View>
         </View>
     )
+}
+
+ProductsDetailScreen.navigationOptions = (navData)=>{
+    return{
+        headerTitle: navData.navigation.getParam('productTitle')
+    }
 }
 
 const styles = StyleSheet.create({
