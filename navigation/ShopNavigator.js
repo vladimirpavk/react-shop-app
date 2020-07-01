@@ -16,7 +16,12 @@ const ProductsNavigation = createStackNavigator({
         {
             backgroundColor: Colors.primary
         },
-        headerTintColor: 'white'
+        headerTintColor: 'white',
+        headerTitleStyle:{
+            fontFamily: 'roboto-bold',
+            fontWeight: 'bold',
+            fontSize: 25
+        }
     }
 });
 

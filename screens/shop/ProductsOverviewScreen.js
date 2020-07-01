@@ -10,11 +10,14 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import ProductItem from '../../componenets/shop/ProductItem';
 
+import * as CartActions from '../../store/actions/cart';
+
 const ProductsOverviewScreen = (props)=>{
     
     const productToCartClicked = (item)=>{
-        console.log('Product to cart clicked...');
-        console.log(item);
+       /*  console.log('Product to cart clicked...');
+        console.log(item); */    
+        props.addToCart(item);
     }
 
     const productDetailClicked = (item)=>{
@@ -38,7 +41,7 @@ const ProductsOverviewScreen = (props)=>{
                             <ProductItem
                                 item={itemData.item}
                                 viewDetailsClicked={()=>productDetailClicked(itemData.item)}
-                                toCartClicked={()=>productToCartClicked()}>
+                                toCartClicked={()=>productToCartClicked(itemData.item)}>
                             </ProductItem>
                             );
                     }
@@ -63,8 +66,18 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state)=>{
     return{
-        products: state.products.availableProducts
+        products: state.products.availableProducts       
     }
 }
 
-export default connect(mapStateToProps)(ProductsOverviewScreen);
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        'addToCart': (item)=>dispatch({
+            type: CartActions.ADD_ITEM,
+            payload: item
+        })
+    }
+   
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsOverviewScreen);

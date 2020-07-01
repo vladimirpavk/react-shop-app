@@ -24,8 +24,8 @@ const ProductItem = (props)=>{
                     />
                 </View>
                 <View style={styles.productItemDetails}>
-                    <Text style={{fontWeight: 'bold', marginBottom: 5}}>{props.item.title}</Text>
-                    <Text style={{fontWeight: '100'}}>${props.item.price}</Text>
+                    <Text style={styles.titleStyle}>{props.item.title}</Text>
+                    <Text style={styles.priceStyle}>${props.item.price}</Text>
                     <View style={styles.productItemButtons}>
                         <Button
                             color={Colors.primary}
@@ -70,6 +70,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%'
+    },
+    titleStyle:{
+        fontFamily: 'roboto-bold',
+        fontWeight: 'bold'        ,
+        fontSize: 25,
+        marginBottom: 5
+    },
+    priceStyle:{
+        fontFamily: 'roboto',
+        fontWeight: '100',
+        fontSize: 15
     }
 })
 

@@ -18,10 +18,9 @@ const ProductsDetailScreen = (props)=>{
             props.navigation.setParams({
                 productTitle: product.title
             });
-        }, [props.navigation]
+        }, [props.navigation.getParam('itemProps')]
     );
   
-
     return(
         <View style={styles.container}>
             <View style={styles.picContainer}>
