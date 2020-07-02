@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     FlatList,
     StyleSheet
  } from 'react-native';
+ 
+ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+ import HeaderButton from '../../UI/HeaderButton';
 
 import { connect } from 'react-redux';
 
@@ -13,11 +16,28 @@ import ProductItem from '../../componenets/shop/ProductItem';
 import * as CartActions from '../../store/actions/cart';
 
 const ProductsOverviewScreen = (props)=>{
+
+    const navigateToCart = ()=>{
+        props.navigation.navigate('Cart');
+    }
+
+    useEffect(
+        ()=>{
+            props.navigation.setParams({
+                toCart: navigateToCart
+            });
+        }, [props.products]
+    )   
     
     const productToCartClicked = (item)=>{
        /*  console.log('Product to cart clicked...');
-        console.log(item); */    
-        props.addToCart(item);
+        console.log(item.id);*/
+        props.addToCart({
+            id: item.id,
+            price: item.price,
+            title: item.title,
+            qty:1
+        });
     }
 
     const productDetailClicked = (item)=>{
@@ -51,8 +71,24 @@ const ProductsOverviewScreen = (props)=>{
     )
 }
 
-ProductsOverviewScreen.navigationOptions = {
-    headerTitle: 'All Products'
+ProductsOverviewScreen.navigationOptions = (navigationData)=>
+{
+    console.log(navigationData);
+
+    return{
+        headerTitle: 'All Products',
+        headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item
+                title='Cart'
+                iconName='md-cart'
+                onPress={
+                    ()=>{
+                        let f = navigationData.navigation.getParam('toCart');
+                        f();
+                    }
+                }/>
+        </HeaderButtons>
+    }   
 };
 
 const styles = StyleSheet.create({

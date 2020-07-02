@@ -8,11 +8,34 @@ const initialState = {
 const reducer = (state=initialState, action)=>{
     switch(action.type){
         case Action.ADD_ITEM:{
-            return {
-                ...state,
-                items: [...state.items, action.payload],
-                totalAmount: state.totalAmount+action.payload.price
+            
+            let isUpdated = false;
+
+            let updatedQtyItem = state.items.map(
+                (item)=>{
+                    if(item.id === action.payload.id){
+                        item.qty = item.qty+1;
+                        isUpdated = true;
+                        return item;
+                    }
+                    return item;
+                }
+            );
+
+            if(isUpdated){
+                return{
+                    ...state,
+                    items: updatedQtyItem,
+                    totalAmount: state.totalAmount + action.payload.price                    
+                }
             }
+            else{
+                return {
+                    ...state,
+                    items: [...state.items, action.payload],
+                    totalAmount: state.totalAmount+action.payload.price
+                }
+            }            
         }
         default:
             return state;

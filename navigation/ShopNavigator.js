@@ -3,12 +3,14 @@ import { createAppContainer } from 'react-navigation';
 
 import ProductOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
+import CartScreen from '../screens/shop/CartScreen';
 
 import Colors from '../constants/Colors';
 
 const ProductsNavigation = createStackNavigator({
     'ProductsOverview': ProductOverviewScreen,
-    'ProductDetail': ProductDetailScreen
+    'ProductDetail': ProductDetailScreen,
+    'Cart': CartScreen
 },
 {
     defaultNavigationOptions:{
