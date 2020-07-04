@@ -9,19 +9,11 @@ import {
 
 import { connect } from 'react-redux';
 
-import { Ionicons } from '@expo/vector-icons';
-
-const CartItem = (props)=>{
-    const itemPrice=props.item.qty*props.item.price;
-    return(
-        <View style={styles.cartItem}>
-            <Text style={styles.cartItemText}>{props.item.title} ${props.item.price} x {props.item.qty} -<Text style={styles.cartItemText1}> ${itemPrice}</Text></Text>
-            <Ionicons name='md-trash' size={25} color='red'/>
-        </View>
-    );
-}
+import CartItem from '../../componenets/shop/CartItem';
+import * as CartActions from '../../store/actions/cart';
 
 const CartScreen = (props)=>{
+
     return(
         <View style={styles.container}>
            <FlatList
@@ -31,7 +23,10 @@ const CartScreen = (props)=>{
                 renderItem={
                     (itemData)=>{                       
                         return(
-                            <CartItem item={itemData.item} />
+                            <CartItem
+                                item={itemData.item}
+                                trashPressed={()=>{props.deleteForCart(itemData.item)}}
+                            />
                         )
                     }
                 }
@@ -46,26 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center'
-    },
-    cartItem:{
-       width: '100%',
-       flexDirection: 'row',
-       justifyContent: 'flex-start',
-       alignItems: 'center',
-       marginBottom: 10,
-       padding: 10
-    },
-    cartItemText:{
-        width:'80%',
-        fontFamily: 'roboto',
-        fontSize: 20,
-        borderColor: 'red',
-        borderWidth: 2
-    },
-    cartItemText1:{
-        fontFamily: 'roboto-bold',
-        fontWeight: 'bold'        
-    },
+    },   
     cartListStyle:{
         flex:1,
         width: '100%',
@@ -80,4 +56,14 @@ const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps)(CartScreen);
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        'deleteForCart': (item)=>dispatch({
+            type: CartActions.DELETE_ITEM,
+            payload: item
+        })
+    }
+   
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartScreen);

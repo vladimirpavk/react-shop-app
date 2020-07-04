@@ -37,6 +37,20 @@ const reducer = (state=initialState, action)=>{
                 }
             }            
         }
+        case Action.DELETE_ITEM:{
+            let updatedItems = state.items.filter(
+                (item)=>{
+                    if(item.id !== action.payload.id){                                          
+                        return item;
+                    }                    
+                }
+            );
+
+            return{
+                items: updatedItems,
+                totalAmount: state.totalAmount-action.payload.price
+            }
+        }
         default:
             return state;
     }
