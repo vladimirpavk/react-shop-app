@@ -4,13 +4,16 @@ import {
     View,
     Text,
     StyleSheet,
-    FlatList
+    FlatList,
+    Button
 } from 'react-native'
 
 import { connect } from 'react-redux';
 
 import CartItem from '../../componenets/shop/CartItem';
 import * as CartActions from '../../store/actions/cart';
+
+import Colors from '../../constants/Colors';
 
 const CartScreen = (props)=>{
 
@@ -31,6 +34,14 @@ const CartScreen = (props)=>{
                     }
                 }
             />
+            <Text style={styles.totalAmount}>Amount total : ${props.cart.totalAmount}</Text>
+            {
+                props.cart.totalAmount !== 0 ?
+                <Button
+                    title="Make order"
+                    onPress={()=>{}}
+                    color={Colors.primary}/> : null
+            }           
         </View>
     )
 }
@@ -42,11 +53,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },   
-    cartListStyle:{
-        flex:1,
-        width: '100%',
-        borderColor: 'red',
-        borderWidth: 2
+    cartListStyle:{       
+        width: '100%'
+    },
+    totalAmount:{
+        fontFamily: 'roboto',
+        fontWeight: 'bold',
+        fontSize: 30
     }
 })
 

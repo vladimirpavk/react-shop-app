@@ -26,14 +26,14 @@ const reducer = (state=initialState, action)=>{
                 return{
                     ...state,
                     items: updatedQtyItem,
-                    totalAmount: state.totalAmount + action.payload.price                    
+                    totalAmount: +(state.totalAmount + action.payload.price).toFixed(2)
                 }
             }
             else{
                 return {
                     ...state,
                     items: [...state.items, action.payload],
-                    totalAmount: state.totalAmount+action.payload.price
+                    totalAmount: +(state.totalAmount+action.payload.price).toFixed(2)
                 }
             }            
         }
@@ -48,7 +48,7 @@ const reducer = (state=initialState, action)=>{
 
             return{
                 items: updatedItems,
-                totalAmount: state.totalAmount-action.payload.price
+                totalAmount: +(state.totalAmount-action.payload.qty*action.payload.price).toFixed(2)
             }
         }
         default:

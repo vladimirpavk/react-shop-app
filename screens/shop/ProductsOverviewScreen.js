@@ -73,8 +73,6 @@ const ProductsOverviewScreen = (props)=>{
 
 ProductsOverviewScreen.navigationOptions = (navigationData)=>
 {
-    console.log(navigationData);
-
     return{
         headerTitle: 'All Products',
         headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
