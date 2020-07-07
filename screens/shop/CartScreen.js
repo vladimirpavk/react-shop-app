@@ -19,21 +19,27 @@ const CartScreen = (props)=>{
 
     return(
         <View style={styles.container}>
-           <FlatList
-                style={styles.cartListStyle}
-                data={props.cart.items}
-                keyExtractor={(item=>item.id)}
-                renderItem={
-                    (itemData)=>{                       
-                        return(
-                            <CartItem
-                                item={itemData.item}
-                                trashPressed={()=>{props.deleteForCart(itemData.item)}}
-                            />
-                        )
+           { props.cart.items.length !== 0 ?
+                <FlatList
+                    style={styles.cartListStyle}
+                    data={props.cart.items}
+                    keyExtractor={(item=>item.id)}
+                    renderItem={
+                        (itemData)=>{                       
+                            return(
+                                <CartItem
+                                    item={itemData.item}
+                                    trashPressed={()=>{props.deleteForCart(itemData.item)}}
+                                />
+                            )
+                        }
                     }
-                }
-            />
+                /> :
+                <View style={styles.empty}>
+                    <Text style={styles.emptyText}>Your cart is empty</Text>
+                </View>                
+        }
+           
             <Text style={styles.totalAmount}>Amount total : ${props.cart.totalAmount}</Text>
             {
                 props.cart.totalAmount !== 0 ?
@@ -55,6 +61,16 @@ const styles = StyleSheet.create({
     },   
     cartListStyle:{       
         width: '100%'
+    },
+    empty:{
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center'    
+    },
+    emptyText:{
+        fontStyle: 'roboto-bold',
+        fontWeight: 'bold',
+        fontSize: 25
     },
     totalAmount:{
         fontFamily: 'roboto',

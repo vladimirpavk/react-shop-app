@@ -75,6 +75,16 @@ ProductsOverviewScreen.navigationOptions = (navigationData)=>
 {
     return{
         headerTitle: 'All Products',
+        headerLeft: <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item
+                title='Drawer'
+                iconName='md-menu'
+                onPress={
+                    ()=>{
+                        navigationData.navigation.toggleDrawer();
+                    }
+                }/>
+        </HeaderButtons>,
         headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Item
                 title='Cart'
