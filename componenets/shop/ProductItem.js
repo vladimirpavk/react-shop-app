@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Image,
@@ -11,6 +11,23 @@ import {
 import Colors from '../../constants/Colors';
 
 const ProductItem = (props)=>{   
+    const [button1Text, setButton1Text] = useState('');
+    const [button2Text, setButton2Text] = useState('');
+
+    useEffect(
+        ()=>{
+            //console.log('effects...', props);
+            if(props.viewDetailsClicked){
+                setButton1Text('View Details');
+                setButton2Text('To Cart');
+            }
+            if(props.editClicked){
+                setButton1Text('Edit');
+                setButton2Text('Delete');
+            }
+        }, [props.viewDetailsClicked, props.editClicked]
+    );
+
     return(
         <TouchableOpacity
             onPress={props.viewDetailsClicked}>
@@ -29,13 +46,13 @@ const ProductItem = (props)=>{
                     <View style={styles.productItemButtons}>
                         <Button
                             color={Colors.primary}
-                            title="View Details"
-                            onPress={props.viewDetailsClicked}
+                            title={button1Text}
+                            onPress={props.viewDetailsClicked || props.editClicked}
                         />
                         <Button
                             color={Colors.primary}
-                            title="To Cart"
-                            onPress={props.toCartClicked}
+                            title={button2Text}
+                            onPress={props.toCartClicked || props.deleteClicked}
                         />
                     </View>
                 </View>

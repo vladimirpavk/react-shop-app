@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
@@ -7,7 +9,9 @@ import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import CartScreen from '../screens/shop/CartScreen';
 import OrdersScreen from '../screens/shop/OrdersScreen';
 
-import {  } from '@expo/vector-icons';
+import UserProducts from '../screens/user/UserProductsScreen';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 
@@ -17,6 +21,9 @@ const ProductsNavigation = createStackNavigator({
     'Cart': CartScreen
 },
 {
+    navigationOptions:{
+        drawerIcon: drawerConfig => <Ionicons name="md-gift" size={24} color="black"></Ionicons>
+    },
     defaultNavigationOptions:{
         headerStyle: 
         {
@@ -36,7 +43,28 @@ const OrdersNavigation = createStackNavigator({
 },
 {
     navigationOptions:{
-        drawerIcon: drawerConfig => <Ionicons></Ionicons>
+        drawerIcon: drawerConfig => <Ionicons name="md-list" size={24} color="black" />
+    },
+    defaultNavigationOptions:{
+        headerStyle: 
+        {
+            backgroundColor: Colors.primary
+        },
+        headerTintColor: 'white',
+        headerTitleStyle:{
+            fontFamily: 'roboto-bold',
+            fontWeight: 'bold',
+            fontSize: 25
+        }
+    }
+});
+
+const UserNavigation = createStackNavigator({
+    'UserProducts': UserProducts,    
+},
+{
+    navigationOptions:{
+        drawerIcon: drawerConfig => <Ionicons name="md-settings" size={24} color="black" />
     },
     defaultNavigationOptions:{
         headerStyle: 
@@ -54,7 +82,8 @@ const OrdersNavigation = createStackNavigator({
 
 const AppNavigation = createDrawerNavigator({
     'Products': ProductsNavigation,
-    'Orders': OrdersNavigation
+    'Orders': OrdersNavigation,
+    'Admin': UserNavigation
 })
 
 export default createAppContainer(AppNavigation);

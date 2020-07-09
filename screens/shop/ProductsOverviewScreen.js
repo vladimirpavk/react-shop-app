@@ -120,8 +120,7 @@ const mapDispatchToProps = (dispatch)=>{
             type: CartActions.ADD_ITEM,
             payload: item
         })
-    }
-   
+    }   
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductsOverviewScreen);
