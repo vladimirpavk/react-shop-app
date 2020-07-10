@@ -8,6 +8,8 @@ import {
 
 import { connect } from 'react-redux';
 
+import { AntDesign } from '@expo/vector-icons';
+
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../UI/HeaderButton';
 
@@ -20,15 +22,22 @@ const UserProductsScreen = (props)=>{
     useEffect(
         ()=>{
             props.filterProducts('u1');
-        }, []
+        }, [props.availableProducts]
     );    
 
     const editClicked = (item)=>{
-        console.log('editClicked', item)
+        //console.log('editClicked', item)
+        props.navigation.navigate({
+            routeName: 'EditProduct',
+            params:{
+                'item': item
+            }
+        });
     };
 
     const deleteClicked = (item)=>{
-        console.log('deleteclicked', item);
+        //console.log('deleteclicked', item);
+        props.deleteProduct(item.id);
     };
 
     return(
@@ -48,6 +57,7 @@ const UserProductsScreen = (props)=>{
                     }
                 }
             />
+            <AntDesign name="pluscircle" size={24} color="black" />
         </View>
     )
 }
@@ -74,18 +84,31 @@ UserProductsScreen.navigationOptions = (navData)=>{
 
 const styles = StyleSheet.create({
     container:{
-        flex: 1
+        flex: 1,
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    newProductIcon:{
+        position: 'absoulte',
+        right: 0,
+        bottom: 0
     }
 });
 
 const mapStateToProps = (state)=>{
     return{
-        filteredProducts: state.products.filteredProducts       
+        'availableProducts': state.products.availableProducts,
+        'filteredProducts': state.products.filteredProducts       
     }
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return{
+        'deleteProduct': (productId)=>dispatch({
+            type: ProductAction.DELETE_PRODUCTS,
+            payload: productId
+        }),
         'filterProducts': (userId)=>dispatch({
             type: ProductAction.FILTER_PRODUCTS,
             payload: userId
