@@ -31,6 +31,25 @@ export const reducer = (state=initialState, action)=>{
                 filteredProducts: [...filteredProducts]
             }
         }
+        case ProductsAction.UPDATE_PRODUCT:{
+            //action.payload === item to update
+            console.log('update product reducer', action.payload);
+
+            const updatedArray = state.availableProducts.map(
+                (item)=>{
+                    if(item.id===action.payload.id){
+                        console.log('...the same');
+                        return action.payload
+                    }
+                    return item;
+                }
+            );
+            console.log('updated array', updatedArray);
+            return{
+                ...state,
+                availableProducts: [...updatedArray]
+            }
+        }
         case(''):{
 
         }

@@ -16,6 +16,7 @@ import HeaderButton from '../../UI/HeaderButton';
 import * as ProductAction from '../../store/actions/products';
 
 import ProductItem from '../../componenets/shop/ProductItem';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const UserProductsScreen = (props)=>{
     
@@ -57,7 +58,19 @@ const UserProductsScreen = (props)=>{
                     }
                 }
             />
-            <AntDesign name="pluscircle" size={24} color="black" />
+           {/*  <TouchableOpacity style={styles.newProductIcon}>            
+                <AntDesign name="pluscircle" size={50} color="black" />
+            </TouchableOpacity> */}
+            <TouchableOpacity>
+                <AntDesign name="pluscircle" style={styles.newProductIcon} size={50} color="blue" />
+            </TouchableOpacity>
+            <AntDesign
+                name="pluscircle"
+                style={styles.newProductIcon}
+                size={50}
+                color="blue"
+                onPress={()=>console.log('icon pressed')}
+            />
         </View>
     )
 }
@@ -89,10 +102,16 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10
     },
-    newProductIcon:{
-        position: 'absoulte',
-        right: 0,
-        bottom: 0
+    newProductIcon:{                                
+        position: 'absolute',                                          
+        bottom: 10,                                                    
+        right: 10,
+        zIndex: 100,
+        borderColor: 'red',
+        borderWidth: 5,
+        borderRadius: 30,
+        borderColor: 'rgba(0,0,0,0.2)',
+        backgroundColor: 'rgba(0,0,0,0.2)'
     }
 });
 

@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import{
     View,
     StyleSheet,
     Text,
-    TextInput
+    TextInput    
 } from 'react-native';
+
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import HeaderButton from '../../UI/HeaderButton';
+
+import { connect } from 'react-redux';
+import * as ProductActions from '../../store/actions/products';
 
 const EditProductScreen = (props)=>{   
     const item = props.navigation.getParam('item');
+
     const [title, setTitle] = useState(item ? item.title : '');
     const [description, setDescription] = useState(item ? item.description : '');
     const [image, setImage] = useState(item ? item.imageUrl : '');
     const [price, setPrice] = useState(item ? item.price : '');
+
+    useEffect(
+        ()=>{
+            props.navigation.setParams({
+                newItem:{
+                    id: item.id,
+                    ownerId: item.ownerId,
+                    title: title,
+                    description: description,
+                    image: image,
+                    price: price
+                }
+            });
+        }, [title, description, image, price]
+    )
+
+    useEffect(
+        ()=>{
+            props.navigation.setParams({
+                updateState: props.updateItem
+            })
+        }, []
+    )
+    
 
     return(
         <View style={styles.container}>
@@ -46,8 +77,22 @@ const EditProductScreen = (props)=>{
 }
 
 EditProductScreen.navigationOptions = (navData)=>{
+    //console.log('new item', navData.navigation.getParam('newItem'));
+
     return {        
-        headerTitle: 'Edit Product - ' + navData.navigation.getParam('item').title
+        headerTitle: 'Edit Product - ' + navData.navigation.getParam('item').title,
+        headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item
+                title='Cart'
+                iconName='md-checkmark'
+                onPress={
+                    ()=>{
+                        //console.log('Checkmark clicked...');
+                        let f=navData.navigation.getParam('updateState');
+                        f(navData.navigation.getParam('newItem'));
+                    }
+                }/>
+        </HeaderButtons>
     }      
 }
 
@@ -75,4 +120,13 @@ const styles = StyleSheet.create({
     }
 })
 
-export default EditProductScreen;
+const mapDispatchToProps=(dispatch)=>{
+    return{
+        'updateItem': (item)=>dispatch({
+            type: ProductActions.UPDATE_PRODUCT,
+            payload: item
+        })
+    }
+}
+
+export default connect(null, mapDispatchToProps)(EditProductScreen);
