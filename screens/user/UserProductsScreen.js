@@ -18,6 +18,8 @@ import * as ProductAction from '../../store/actions/products';
 import ProductItem from '../../componenets/shop/ProductItem';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import Product from '../../models/Product';
+
 const UserProductsScreen = (props)=>{
     
     useEffect(
@@ -41,6 +43,17 @@ const UserProductsScreen = (props)=>{
         props.deleteProduct(item.id);
     };
 
+    const addNewItemPressed = ()=>{
+        console.log('addNewItemPressed');
+        props.navigation.navigate({
+            routeName: 'EditProduct',
+            params:{
+                'item': new Product('xxx', 'u1', '', '', '', ''),               
+                'mode': 'new'
+            }
+        });
+    }
+
     return(
         <View style={styles.container}>      
             <FlatList               
@@ -58,18 +71,12 @@ const UserProductsScreen = (props)=>{
                     }
                 }
             />
-           {/*  <TouchableOpacity style={styles.newProductIcon}>            
-                <AntDesign name="pluscircle" size={50} color="black" />
-            </TouchableOpacity> */}
-            <TouchableOpacity>
-                <AntDesign name="pluscircle" style={styles.newProductIcon} size={50} color="blue" />
-            </TouchableOpacity>
             <AntDesign
                 name="pluscircle"
                 style={styles.newProductIcon}
                 size={50}
                 color="blue"
-                onPress={()=>console.log('icon pressed')}
+                onPress={addNewItemPressed}
             />
         </View>
     )

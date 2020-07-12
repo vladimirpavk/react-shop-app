@@ -32,26 +32,26 @@ export const reducer = (state=initialState, action)=>{
             }
         }
         case ProductsAction.UPDATE_PRODUCT:{
-            //action.payload === item to update
-            console.log('update product reducer', action.payload);
+            //action.payload === item to update           
 
             const updatedArray = state.availableProducts.map(
                 (item)=>{
-                    if(item.id===action.payload.id){
-                        console.log('...the same');
+                    if(item.id===action.payload.id){                        
                         return action.payload
                     }
                     return item;
                 }
-            );
-            console.log('updated array', updatedArray);
+            );            
             return{
                 ...state,
                 availableProducts: [...updatedArray]
             }
-        }
-        case(''):{
-
+        }      
+        case ProductsAction.ADD_PRODUCT:{            
+            return{
+                ...state,
+                availableProducts: [...state.availableProducts, action.payload]
+            }
         }
         default:
             return state

@@ -11,26 +11,20 @@ import HeaderButton from '../../UI/HeaderButton';
 
 import { connect } from 'react-redux';
 import * as ProductActions from '../../store/actions/products';
+import Product from '../../models/product';
 
 const EditProductScreen = (props)=>{   
-    const item = props.navigation.getParam('item');
+    const item = props.navigation.getParam('item');   
 
-    const [title, setTitle] = useState(item ? item.title : '');
-    const [description, setDescription] = useState(item ? item.description : '');
-    const [image, setImage] = useState(item ? item.imageUrl : '');
-    const [price, setPrice] = useState(item ? item.price : '');
+    const [title, setTitle] = useState(item.title);
+    const [description, setDescription] = useState(item.description);
+    const [image, setImage] = useState(item.imageUrl);
+    const [price, setPrice] = useState(item.price); 
 
     useEffect(
         ()=>{
             props.navigation.setParams({
-                newItem:{
-                    id: item.id,
-                    ownerId: item.ownerId,
-                    title: title,
-                    description: description,
-                    image: image,
-                    price: price
-                }
+                newItem: new Product(item.id, item.ownerId, title, image, description)              
             });
         }, [title, description, image, price]
     )
@@ -38,7 +32,8 @@ const EditProductScreen = (props)=>{
     useEffect(
         ()=>{
             props.navigation.setParams({
-                updateState: props.updateItem
+                updateState: props.updateItem,
+                addToState: props.addItem
             })
         }, []
     )
@@ -77,23 +72,34 @@ const EditProductScreen = (props)=>{
 }
 
 EditProductScreen.navigationOptions = (navData)=>{
-    //console.log('new item', navData.navigation.getParam('newItem'));
+    //console.log(navData.navigation.getParam('newItem'));
+    const newItem = navData.navigation.getParam('newItem');
+    if(newItem){
+        return {        
+            headerTitle: navData.navigation.getParam('item').title!=='' ? 'Edit Product - ' + navData.navigation.getParam('item').title : 'New Product',
+            headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                <Item
+                    title='Cart'
+                    iconName='md-checkmark'
+                    onPress={
+                        ()=>{
+                            //console.log('Checkmark clicked...');
+                            let f;
+                            if(navData.navigation.getParam('mode')==='new'){
 
-    return {        
-        headerTitle: 'Edit Product - ' + navData.navigation.getParam('item').title,
-        headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-                title='Cart'
-                iconName='md-checkmark'
-                onPress={
-                    ()=>{
-                        //console.log('Checkmark clicked...');
-                        let f=navData.navigation.getParam('updateState');
-                        f(navData.navigation.getParam('newItem'));
-                    }
-                }/>
-        </HeaderButtons>
-    }      
+                                f=navData.navigation.getParam('addToState');
+                            }                            
+                            else{
+                                f=navData.navigation.getParam('updateState');                        
+                            }        
+                            //console.log('New Item', newItem);
+                            f(newItem);
+                            navData.navigation.goBack();
+                        }
+                    }/>
+            </HeaderButtons>
+        }
+    } 
 }
 
 const styles = StyleSheet.create({
@@ -124,6 +130,10 @@ const mapDispatchToProps=(dispatch)=>{
     return{
         'updateItem': (item)=>dispatch({
             type: ProductActions.UPDATE_PRODUCT,
+            payload: item
+        }),
+        'addItem': (item)=>dispatch({
+            type: ProductActions.ADD_PRODUCT,
             payload: item
         })
     }
