@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import{
     View,
     StyleSheet,
@@ -13,10 +13,103 @@ import { connect } from 'react-redux';
 import * as ProductActions from '../../store/actions/products';
 import Product from '../../models/product';
 
+const reducer = (state, action)=>{
+    switch(action.type){
+        case 'UPDATE_INPUT_VALUES':{
+            const newState = {
+                ...state,
+                inputValues:{
+                    ...state.inputValues,
+                    [action.fieldName] : action.fieldValue
+                },
+                inputValidities:{
+                    ...state.inputValidities,
+                    [action.filedValidationName] : action.filedValidationValue
+                }
+            };            
+            return newState;
+        }
+        default:{
+            return state;
+        }  
+    }        
+}
+
 const EditProductScreen = (props)=>{   
     const item = props.navigation.getParam('item');   
+    const mode = props.navigation.getParam('mode');
 
-    const [title, setTitle] = useState(item.title);
+    const initialFormState = {
+        inputValues:{
+            title: item.title,
+            description: item.description,
+            imageUrl: item.imageUrl,
+            price: item.price
+        },
+        inputValidities:{
+            isTitleValid: mode==='new' ? false : true,
+            isDescValid: mode==='new' ? false : true,
+            isImageUrlValid: mode==='new' ? false : true,
+            isPriceValid: mode==='new' ? false : true
+        },
+        isFormValid: mode==='new' ? false : true
+    };
+
+    const [state, dispatch] = useReducer(reducer, initialFormState);
+
+    const updateTitle= (text)=>{
+        let validation=true;
+        if(text.length===0) validation = false;
+        
+        dispatch({
+            type: 'UPDATE_INPUT_VALUES',
+            fieldName: 'title',
+            fieldValue: text,
+            filedValidationName: 'isTitleValid',
+            filedValidationValue: validation
+        });
+    }
+
+    const updateDescription = (text)=>{
+        let validation = true;
+        if(text.length < 10) validation=false;
+
+        dispatch({
+            type: 'UPDATE_INPUT_VALUES',
+            fieldName: 'description',
+            fieldValue: text,
+            filedValidationName: 'isDescValid',
+            filedValidationValue: validation
+        });
+    }
+
+    const updateImageUrl = (text)=>{
+        let validation = true;
+        if(text.length < 25) validation=false;
+
+        dispatch({
+            type: 'UPDATE_INPUT_VALUES',
+            fieldName: 'imageUrl',
+            fieldValue: text,
+            filedValidationName: 'isImageUrlValid',
+            filedValidationValue: validation
+        });
+    }
+
+    const updatePrice = (text)=>{
+        let validation = true;
+        if(+text===0) validation=false;
+
+        dispatch({
+            type: 'UPDATE_INPUT_VALUES',
+            fieldName: 'price',
+            fieldValue: text,
+            filedValidationName: 'isPriceValid',
+            filedValidationValue: validation
+        });
+    }
+
+   /*  const [title, setTitle] = useState(item.title);
     const [description, setDescription] = useState(item.description);
     const [image, setImage] = useState(item.imageUrl);
     const [price, setPrice] = useState(item.price); 
@@ -36,7 +129,7 @@ const EditProductScreen = (props)=>{
                 addToState: props.addItem
             })
         }, []
-    )
+    ) */
     
 
     return(
@@ -44,35 +137,51 @@ const EditProductScreen = (props)=>{
             <Text style={styles.labelStyle}>Title</Text>
             <TextInput
                 style={styles.inputStyle}
-                value={title}
-                onChangeText={(text)=>setTitle(text)}
+                value={state.inputValues.title}
+                onChangeText={(text)=>updateTitle(text)}
             />
+            {
+                !state.inputValidities.isTitleValid ?
+                <Text>* Field can not be empty</Text> : null
+            }            
             <Text style={styles.labelStyle}>Description</Text>
             <TextInput
                 style={styles.inputStyle}
-                value={description}
-                onChangeText={(text)=>setDescription(text)}
+                value={state.inputValues.description}
+                onChangeText={(text)=>updateDescription(text)}
                 multiline={true}
                 numberOfLines={4}
             />
+            {
+                !state.inputValidities.isDescValid ?
+                <Text>* Field must be at least 10 chars length</Text> : null
+            }
             <Text style={styles.labelStyle}>Image</Text>
             <TextInput
                 style={styles.inputStyle}
-                value={image}
-                onChangeText={(text)=>setImage(text)}
+                value={state.inputValues.imageUrl}
+                onChangeText={(text)=>updateImageUrl(text)}
             />
+             {
+                !state.inputValidities.isDescValid ?
+                <Text>* Field must be at least 25 chars length</Text> : null
+            }
             <Text style={styles.labelStyle}>Price($)</Text>
             <TextInput
                 style={styles.inputStyle}
-                value={price.toString()}
-                onChangeText={(text)=>setPrice(text)}
+                value={state.inputValues.price.toString()}
+                onChangeText={(text)=>updatePrice(text)}
             />
+            {
+                !state.inputValidities.isPriceValid ?
+                <Text>* Price can not be 0</Text> : null
+            }
         </View>
     )
 }
 
 EditProductScreen.navigationOptions = (navData)=>{
-    //console.log(navData.navigation.getParam('newItem'));
+  /*   //console.log(navData.navigation.getParam('newItem'));
     const newItem = navData.navigation.getParam('newItem');
     if(newItem){
         return {        
@@ -99,7 +208,7 @@ EditProductScreen.navigationOptions = (navData)=>{
                     }/>
             </HeaderButtons>
         }
-    } 
+    }  */
 }
 
 const styles = StyleSheet.create({
