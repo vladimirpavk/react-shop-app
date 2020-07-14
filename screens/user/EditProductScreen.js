@@ -35,6 +35,46 @@ const reducer = (state, action)=>{
     }        
 }
 
+const validation = (fieldName, fieldValue)=>{
+    let validate=true;
+
+    switch(fieldName){
+        case('title'):{
+            //console.log('title validation');
+            if(fieldValue.length===0){
+                validate = false;                
+            }                
+            break;
+        }
+        case('description'):{
+            //console.log('description validation')
+            if(fieldValue.length < 10){
+                validate=false;
+            }
+            break;
+        }
+        case('imageUrl'):{
+            //console.log('imageUrl validation')
+            if(fieldValue.length < 25){
+                validate=false;
+            }
+            break;
+        }
+        case('price'):{
+            //console.log('price validation')
+            if(+fieldValue===0){
+                validate=false;
+            }
+            break;
+        }
+        default:{
+            return validate;
+        }
+    }
+    //console.log('validation function', validate);
+    return validate;
+}
+
 const EditProductScreen = (props)=>{   
     const item = props.navigation.getParam('item');   
     const mode = props.navigation.getParam('mode');
@@ -57,55 +97,17 @@ const EditProductScreen = (props)=>{
 
     const [state, dispatch] = useReducer(reducer, initialFormState);
 
-    const updateTitle= (text)=>{
-        let validation=true;
-        if(text.length===0) validation = false;
-        
-        dispatch({
-            type: 'UPDATE_INPUT_VALUES',
-            fieldName: 'title',
-            fieldValue: text,
-            filedValidationName: 'isTitleValid',
-            filedValidationValue: validation
-        });
-    }
+    const update = (text, fieldName, fieldValidationName)=>{    
+        //console.log('update', text, fieldName, fieldValidationName);
 
-    const updateDescription = (text)=>{
-        let validation = true;
-        if(text.length < 10) validation=false;
+        const isValid = validation(fieldName, text)         
 
         dispatch({
             type: 'UPDATE_INPUT_VALUES',
-            fieldName: 'description',
+            fieldName: fieldName,
             fieldValue: text,
-            filedValidationName: 'isDescValid',
-            filedValidationValue: validation
-        });
-    }
-
-    const updateImageUrl = (text)=>{
-        let validation = true;
-        if(text.length < 25) validation=false;
-
-        dispatch({
-            type: 'UPDATE_INPUT_VALUES',
-            fieldName: 'imageUrl',
-            fieldValue: text,
-            filedValidationName: 'isImageUrlValid',
-            filedValidationValue: validation
-        });
-    }
-
-    const updatePrice = (text)=>{
-        let validation = true;
-        if(+text===0) validation=false;
-
-        dispatch({
-            type: 'UPDATE_INPUT_VALUES',
-            fieldName: 'price',
-            fieldValue: text,
-            filedValidationName: 'isPriceValid',
-            filedValidationValue: validation
+            filedValidationName: fieldValidationName,
+            filedValidationValue: isValid
         });
     }
 
@@ -138,7 +140,7 @@ const EditProductScreen = (props)=>{
             <TextInput
                 style={styles.inputStyle}
                 value={state.inputValues.title}
-                onChangeText={(text)=>updateTitle(text)}
+                onChangeText={(text)=>update(text, 'title', 'isTitleValid')}
             />
             {
                 !state.inputValidities.isTitleValid ?
@@ -148,7 +150,7 @@ const EditProductScreen = (props)=>{
             <TextInput
                 style={styles.inputStyle}
                 value={state.inputValues.description}
-                onChangeText={(text)=>updateDescription(text)}
+                onChangeText={(text)=>update(text, 'description', 'isDescValid')}
                 multiline={true}
                 numberOfLines={4}
             />
@@ -160,17 +162,17 @@ const EditProductScreen = (props)=>{
             <TextInput
                 style={styles.inputStyle}
                 value={state.inputValues.imageUrl}
-                onChangeText={(text)=>updateImageUrl(text)}
+                onChangeText={(text)=>update(text, 'imageUrl', 'isImageUrlValid')}
             />
              {
-                !state.inputValidities.isDescValid ?
+                !state.inputValidities.isImageUrlValid ?
                 <Text>* Field must be at least 25 chars length</Text> : null
             }
             <Text style={styles.labelStyle}>Price($)</Text>
             <TextInput
                 style={styles.inputStyle}
                 value={state.inputValues.price.toString()}
-                onChangeText={(text)=>updatePrice(text)}
+                onChangeText={(text)=>update(text, 'price', 'isPriceValid')}
             />
             {
                 !state.inputValidities.isPriceValid ?
