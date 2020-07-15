@@ -16,6 +16,7 @@ import Product from '../../models/product';
 const reducer = (state, action)=>{
     switch(action.type){
         case 'UPDATE_INPUT_VALUES':{
+
             const newState = {
                 ...state,
                 inputValues:{
@@ -26,8 +27,20 @@ const reducer = (state, action)=>{
                     ...state.inputValidities,
                     [action.filedValidationName] : action.filedValidationValue
                 }
-            };            
-            return newState;
+            };          
+            
+            let isFormValid = true;
+            Object.keys(newState.inputValidities).forEach(
+                (key)=>{
+                    //console.log((newState.inputValidities)[key]);
+                    isFormValid = isFormValid && (newState.inputValidities)[key]
+                }
+            )  
+            const newState2 = {
+                ...newState,
+                isFormValid: isFormValid
+            };
+            return newState2;
         }
         default:{
             return state;
@@ -62,7 +75,7 @@ const validation = (fieldName, fieldValue)=>{
         }
         case('price'):{
             //console.log('price validation')
-            if(+fieldValue===0){
+            if(isNaN(fieldValue) || +fieldValue===0){
                 validate=false;
             }
             break;
@@ -78,9 +91,11 @@ const validation = (fieldName, fieldValue)=>{
 const EditProductScreen = (props)=>{   
     const item = props.navigation.getParam('item');   
     const mode = props.navigation.getParam('mode');
-
+    
     const initialFormState = {
         inputValues:{
+            id: item.id,
+            ownerId: item.ownerId,
             title: item.title,
             description: item.description,
             imageUrl: item.imageUrl,
@@ -98,8 +113,7 @@ const EditProductScreen = (props)=>{
     const [state, dispatch] = useReducer(reducer, initialFormState);
 
     const update = (text, fieldName, fieldValidationName)=>{    
-        //console.log('update', text, fieldName, fieldValidationName);
-
+        
         const isValid = validation(fieldName, text)         
 
         dispatch({
@@ -109,31 +123,26 @@ const EditProductScreen = (props)=>{
             filedValidationName: fieldValidationName,
             filedValidationValue: isValid
         });
-    }
-
-   /*  const [title, setTitle] = useState(item.title);
-    const [description, setDescription] = useState(item.description);
-    const [image, setImage] = useState(item.imageUrl);
-    const [price, setPrice] = useState(item.price); 
+    }   
 
     useEffect(
         ()=>{
             props.navigation.setParams({
-                newItem: new Product(item.id, item.ownerId, title, image, description)              
-            });
-        }, [title, description, image, price]
-    )
+                newItem: state.inputValues,
+                isFormValid: state.isFormValid
+            })
+        }, [state]
+    );
 
     useEffect(
         ()=>{
             props.navigation.setParams({
-                updateState: props.updateItem,
-                addToState: props.addItem
+                'addToState' : props.addItem,
+                'updateState' : props.updateItem
             })
         }, []
-    ) */
+    );
     
-
     return(
         <View style={styles.container}>
             <Text style={styles.labelStyle}>Title</Text>
@@ -176,22 +185,25 @@ const EditProductScreen = (props)=>{
             />
             {
                 !state.inputValidities.isPriceValid ?
-                <Text>* Price can not be 0</Text> : null
+                <Text>* Price can not be 0 nad must be a number</Text> : null
             }
         </View>
     )
 }
 
 EditProductScreen.navigationOptions = (navData)=>{
-  /*   //console.log(navData.navigation.getParam('newItem'));
-    const newItem = navData.navigation.getParam('newItem');
+    const newItem = navData.navigation.getParam('newItem');    
+    const isFormValid = navData.navigation.getParam('isFormValid');
+    const item = navData.navigation.getParam('item');
+
     if(newItem){
         return {        
-            headerTitle: navData.navigation.getParam('item').title!=='' ? 'Edit Product - ' + navData.navigation.getParam('item').title : 'New Product',
+            headerTitle: item.title!=='' ? 'Edit Product - ' + item.title : 'New Product',
             headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
                 <Item
+                    disabled={isFormValid ? false : true}
                     title='Cart'
-                    iconName='md-checkmark'
+                    iconName={isFormValid ? 'md-checkmark' : 'md-alert'}
                     onPress={
                         ()=>{
                             //console.log('Checkmark clicked...');
@@ -210,7 +222,7 @@ EditProductScreen.navigationOptions = (navData)=>{
                     }/>
             </HeaderButtons>
         }
-    }  */
+    }  
 }
 
 const styles = StyleSheet.create({
