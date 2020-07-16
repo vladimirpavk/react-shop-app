@@ -20,7 +20,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Product from '../../models/Product';
 
+import Products from '../../data/dummy-data';
+
+import * as firebase from 'firebase/app';
+
 const UserProductsScreen = (props)=>{
+
+    var defDb = firebase.database();
     
     useEffect(
         ()=>{
@@ -43,15 +49,31 @@ const UserProductsScreen = (props)=>{
         props.deleteProduct(item.id);
     };
 
-    const addNewItemPressed = ()=>{
+    const addNewItemPressed = ()=>{    
+        defDb.
         console.log('addNewItemPressed');
-        props.navigation.navigate({
+        fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify(Products)
+        }).then(
+            (responseData)=>{
+                console.log(responseData)
+            }
+        ).catch(
+            (error)=>{
+                console.log(error);
+            }
+        );
+    /*     props.navigation.navigate({
             routeName: 'EditProduct',
             params:{
                 'item': new Product('xxx', 'u1', '', '', '', ''),               
                 'mode': 'new'
             }
-        });
+        }); */
     }
 
     return(

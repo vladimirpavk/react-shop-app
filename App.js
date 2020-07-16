@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -5,18 +6,28 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 
 import { Provider } from 'react-redux';
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
+import ReduxThunk from 'redux-thunk';
 
 import ShopNavigator from './navigation/ShopNavigator';
+
+import * as firebase from 'firebase/app';
+import { firebaseObject } from './Settings';
 
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer
 });
 
-const store=createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store=createStore(
+  rootReducer,
+  composeEnhancers(
+    applyMiddleware(ReduxThunk)
+  )
+);
 
 const loadFonts = ()=>{
   return Font.loadAsync({
