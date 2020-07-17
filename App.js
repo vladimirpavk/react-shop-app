@@ -13,9 +13,6 @@ import ReduxThunk from 'redux-thunk';
 
 import ShopNavigator from './navigation/ShopNavigator';
 
-import * as firebase from 'firebase/app';
-import { firebaseObject } from './Settings';
-
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer

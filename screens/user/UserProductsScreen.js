@@ -22,12 +22,8 @@ import Product from '../../models/Product';
 
 import Products from '../../data/dummy-data';
 
-import * as firebase from 'firebase/app';
-
 const UserProductsScreen = (props)=>{
 
-    var defDb = firebase.database();
-    
     useEffect(
         ()=>{
             props.filterProducts('u1');
@@ -35,7 +31,6 @@ const UserProductsScreen = (props)=>{
     );    
 
     const editClicked = (item)=>{
-        //console.log('editClicked', item)
         props.navigation.navigate({
             routeName: 'EditProduct',
             params:{
@@ -45,32 +40,33 @@ const UserProductsScreen = (props)=>{
     };
 
     const deleteClicked = (item)=>{
-        //console.log('deleteclicked', item);
         props.deleteProduct(item.id);
     };
 
     const addNewItemPressed = ()=>{    
-        defDb.
-        console.log('addNewItemPressed');
-        fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
+      /*   console.log('addNewItemPressed');    */    
+      fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
             method: 'POST',
             headers:{
-                'Content-Type': 'Application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Products)
+            body: {
+                "item1": "vladimirpavk",
+                "item2": "pavlepavkovic"
+            }
         }).then(
             (responseData)=>{
-                console.log(responseData)
+                console.log(responseData);            
             }
         ).catch(
             (error)=>{
                 console.log(error);
             }
-        );
-    /*     props.navigation.navigate({
+    );      
+     /*    props.navigation.navigate({
             routeName: 'EditProduct',
             params:{
-                'item': new Product('xxx', 'u1', '', '', '', ''),               
+                'item': new Product('', 'u1', '', '', '', ''),               
                 'mode': 'new'
             }
         }); */

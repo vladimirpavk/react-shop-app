@@ -255,10 +255,11 @@ const mapDispatchToProps=(dispatch)=>{
             type: ProductActions.UPDATE_PRODUCT,
             payload: item
         }),
+        'addItem': (item)=>dispatch(ProductActions.AddProduct(item)) /* ,
         'addItem': (item)=>dispatch({
             type: ProductActions.ADD_PRODUCT,
             payload: item
-        })        
+        })  */       
     }
 }
 
