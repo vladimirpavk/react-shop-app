@@ -14,6 +14,7 @@ import Colors from '../../constants/Colors';
 import ProductItem from '../../componenets/shop/ProductItem';
 
 import * as CartActions from '../../store/actions/cart';
+import * as ProductActions from '../../store/actions/products';
 
 const ProductsOverviewScreen = (props)=>{
 
@@ -24,14 +25,18 @@ const ProductsOverviewScreen = (props)=>{
     useEffect(
         ()=>{
             props.navigation.setParams({
-                toCart: navigateToCart
+                'toCart': navigateToCart
             });
         }, [props.products]
     )   
+    useEffect(
+        ()=>{
+            props.initProducts();            
+            console.log('init');
+        }, []
+    )
     
-    const productToCartClicked = (item)=>{
-       /*  console.log('Product to cart clicked...');
-        console.log(item.id);*/
+    const productToCartClicked = (item)=>{    
         props.addToCart({
             id: item.id,
             price: item.price,
@@ -110,7 +115,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state)=>{
     return{
-        products: state.products.availableProducts       
+        'products': state.products.availableProducts       
     }
 }
 
@@ -119,7 +124,8 @@ const mapDispatchToProps = (dispatch)=>{
         'addToCart': (item)=>dispatch({
             type: CartActions.ADD_ITEM,
             payload: item
-        })
+        }),
+        'initProducts': ()=>dispatch(ProductActions.InitProducts())
     }   
 }
 

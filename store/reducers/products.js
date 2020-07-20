@@ -3,7 +3,8 @@ import PRODUCTS from '../../data/dummy-data';
 import * as ProductsAction from '../actions/products';
 
 const initialState = {
-    availableProducts: PRODUCTS,
+    //availableProducts: PRODUCTS,
+    availableProducts: [],
     filteredProducts: []
 }
 
@@ -51,6 +52,13 @@ export const reducer = (state=initialState, action)=>{
             return{
                 ...state,
                 availableProducts: [...state.availableProducts, action.payload]
+            }
+        }
+        case ProductsAction.INIT_PRODUCTS:{
+            //action.payload - available items
+            return{
+                ...state,
+                availableProducts: action.payload
             }
         }
         default:

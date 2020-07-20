@@ -6,11 +6,43 @@ export const UPDATE_PRODUCT = 'UPDATE PRODUCT';
 export const ADD_PRODUCT = 'ADD PRODUCT';
 export const INIT_PRODUCTS = 'INIT PRODUCTS';
 
-export const InitProducts = (item)=>{
-  return({
-        type: INIT_PRODUCTS,
-        payload: items
-    });
+export const InitProducts = ()=>{    
+    console.log('InitProducts = ()=>');
+
+    return (dispatch)=>{
+        return fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
+            method: 'GET',
+            headers:{               
+                'content-type': 'application/json'
+            }
+        }).then(
+            (responseData)=>{
+                return responseData.json();            
+            }
+        ).then(
+            (data)=>{
+                let newArray = [];
+
+                Object.keys(data).forEach(
+                    (key)=>{
+                        newArray.push({
+                            id: key,
+                            ...data[key]
+                        })
+                    }
+                );              
+                                
+                dispatch({
+                    type: INIT_PRODUCTS,
+                    payload: newArray
+                });
+            }
+        ).catch(
+            (error)=>{
+                console.log(error);
+            }
+        );         
+    }
 }
 
 export const AddProduct = (item)=>{    

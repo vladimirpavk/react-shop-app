@@ -44,25 +44,26 @@ const UserProductsScreen = (props)=>{
     };
 
     const addNewItemPressed = ()=>{    
-      /*   console.log('addNewItemPressed');    */    
-      fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
+      /*   console.log('addNewItemPressed');    */  
+     /*  Products.forEach(
+          (product)=>{
+              let productItem = {
+                ownerId: product.ownerId,
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                imageUrl: product.imageUrl
+              }
+          
+          fetch('https://rn-store-app-73c67.firebaseio.com/products.json', {
             method: 'POST',
-            headers:{
-                'Content-Type': 'application/json'
+            headers: {
+              'content-type': 'application/json'
             },
-            body: {
-                "item1": "vladimirpavk",
-                "item2": "pavlepavkovic"
-            }
-        }).then(
-            (responseData)=>{
-                console.log(responseData);            
-            }
-        ).catch(
-            (error)=>{
-                console.log(error);
-            }
-    );      
+            body: JSON.stringify(productItem)
+        });
+    });       */
+
      /*    props.navigation.navigate({
             routeName: 'EditProduct',
             params:{
