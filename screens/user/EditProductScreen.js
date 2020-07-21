@@ -251,10 +251,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps=(dispatch)=>{
     return{
-        'updateItem': (item)=>dispatch({
-            type: ProductActions.UPDATE_PRODUCT,
-            payload: item
-        }),
+        'updateItem': (item)=>dispatch(ProductActions.EditProduct(item)),
         'addItem': (item)=>dispatch(ProductActions.AddProduct(item)) /* ,
         'addItem': (item)=>dispatch({
             type: ProductActions.ADD_PRODUCT,

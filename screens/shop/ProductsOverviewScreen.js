@@ -27,12 +27,11 @@ const ProductsOverviewScreen = (props)=>{
             props.navigation.setParams({
                 'toCart': navigateToCart
             });
-        }, [props.products]
+        }, []
     )   
     useEffect(
         ()=>{
-            props.initProducts();            
-            console.log('init');
+            props.initProducts();
         }, []
     )
     

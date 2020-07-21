@@ -7,8 +7,6 @@ export const ADD_PRODUCT = 'ADD PRODUCT';
 export const INIT_PRODUCTS = 'INIT PRODUCTS';
 
 export const InitProducts = ()=>{    
-    console.log('InitProducts = ()=>');
-
     return (dispatch)=>{
         return fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
             method: 'GET',
@@ -45,30 +43,79 @@ export const InitProducts = ()=>{
     }
 }
 
-export const AddProduct = (item)=>{    
-    fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
-        method: 'POST',
-        headers:{
-            'Content-Type': 'Application/json'
-        },
-        body: {
-            "item1": "vladimirpavk",
-            "item2": "pavlepavkovic"
-        }
-    }).then(
-        (responseData)=>{
-            console.log(responseData);            
-        }
-    ).catch(
-        (error)=>{
-            console.log(error);
-        }
-    );      
-
-    return dispatch=>{
-            dispatch({
-                type: 'ADD_PRODUCT',
-                payload: item
+export const AddProduct = (item)=>{ 
+    return (dispatch)=>{
+        return fetch('https://rn-store-app-73c67.firebaseio.com/products.json',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify({
+                ownerId: item.ownerId,
+                imageUrl: item.imageUrl,
+                description: item.description,
+                price: item.price,
+                title: item.price
             })
-        }
+        }).then(
+            (responseData)=>responseData.json()        
+        ).then(
+            (response)=>{            
+                    dispatch({
+                        type: ADD_PRODUCT,
+                        payload: {
+                            ...item,
+                            id: response.name                        
+                        }
+                    })
+        }).catch(
+            (error)=>{
+                console.log(error);
+            }
+        );      
+    }      
+}
+
+export const EditProduct = (item)=>{
+    return dispatch=>{
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/products/${item.id}.json`,{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify(item)
+        }).then(
+            (response)=>{
+                console.log(response);
+                dispatch({
+                    type: UPDATE_PRODUCT,
+                    payload: item
+                });
+            }).catch(
+                (error)=>{
+                    console.log(error);
+                }
+            )                  
     }
+}
+
+export const DeleteProduct = (itemId)=>{
+    return dispatch=>{
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/products/${itemId}.json`,{
+            method: 'DELETE',
+            headers:{
+                'Content-Type': 'Application/json'
+            }
+        }).then(
+            (response)=>{
+                console.log(response);
+                dispatch({
+                    type: DELETE_PRODUCTS,
+                    payload: itemId
+                });
+            }).catch(
+                (error)=>{
+                    console.log(error);
+                })
+    }
+}

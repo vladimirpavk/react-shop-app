@@ -43,34 +43,14 @@ const UserProductsScreen = (props)=>{
         props.deleteProduct(item.id);
     };
 
-    const addNewItemPressed = ()=>{    
-      /*   console.log('addNewItemPressed');    */  
-     /*  Products.forEach(
-          (product)=>{
-              let productItem = {
-                ownerId: product.ownerId,
-                title: product.title,
-                description: product.description,
-                price: product.price,
-                imageUrl: product.imageUrl
-              }
-          
-          fetch('https://rn-store-app-73c67.firebaseio.com/products.json', {
-            method: 'POST',
-            headers: {
-              'content-type': 'application/json'
-            },
-            body: JSON.stringify(productItem)
-        });
-    });       */
-
-     /*    props.navigation.navigate({
+    const addNewItemPressed = ()=>{        
+        props.navigation.navigate({
             routeName: 'EditProduct',
             params:{
                 'item': new Product('', 'u1', '', '', '', ''),               
                 'mode': 'new'
             }
-        }); */
+        });
     }
 
     return(
@@ -150,10 +130,7 @@ const mapStateToProps = (state)=>{
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        'deleteProduct': (productId)=>dispatch({
-            type: ProductAction.DELETE_PRODUCTS,
-            payload: productId
-        }),
+        'deleteProduct': (productId)=>dispatch(ProductAction.DeleteProduct(productId)),
         'filterProducts': (userId)=>dispatch({
             type: ProductAction.FILTER_PRODUCTS,
             payload: userId
