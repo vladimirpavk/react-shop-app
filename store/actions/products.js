@@ -86,7 +86,7 @@ export const EditProduct = (item)=>{
             body: JSON.stringify(item)
         }).then(
             (response)=>{
-                console.log(response);
+                //console.log(response);
                 dispatch({
                     type: UPDATE_PRODUCT,
                     payload: item
@@ -108,7 +108,7 @@ export const DeleteProduct = (itemId)=>{
             }
         }).then(
             (response)=>{
-                console.log(response);
+                //console.log(response);
                 dispatch({
                     type: DELETE_PRODUCTS,
                     payload: itemId

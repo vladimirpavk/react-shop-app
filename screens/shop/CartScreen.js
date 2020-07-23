@@ -13,9 +13,23 @@ import { connect } from 'react-redux';
 import CartItem from '../../componenets/shop/CartItem';
 import * as CartActions from '../../store/actions/cart';
 
+import Order from '../../models/Order';
+import * as OrderActions from '../../store/actions/orders';
+
 import Colors from '../../constants/Colors';
 
 const CartScreen = (props)=>{
+
+    const makeOrder = ()=>{
+        props.addOrder({
+            dateStart: Date.now(),
+            status: 'In-Progress',
+            cartItem: props.cart.items
+        });
+
+        props.clearCart();
+        props.navigation.goBack();        
+    }
 
     return(
         <View style={styles.container}>
@@ -45,7 +59,7 @@ const CartScreen = (props)=>{
                 props.cart.totalAmount !== 0 ?
                 <Button
                     title="Make order"
-                    onPress={()=>{}}
+                    onPress={makeOrder}
                     color={Colors.primary}/> : null
             }           
         </View>
@@ -81,16 +95,23 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state)=>{    
     return{
-        'cart': state.cart
+        'cart': state.cart,
+        'orders': state.orders
     }
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return{
+        'clearCart': ()=>{
+            dispatch({
+                type: CartActions.CLEAR_CART
+            })
+        },
         'deleteForCart': (item)=>dispatch({
             type: CartActions.DELETE_ITEM,
             payload: item
-        })
+        }),
+        'addOrder': (item)=>dispatch(OrderActions.AddOrder(item))
     }
    
 }
