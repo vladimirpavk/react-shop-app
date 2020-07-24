@@ -79,27 +79,35 @@ ProductsOverviewScreen.navigationOptions = (navigationData)=>
 {
     return{
         headerTitle: 'All Products',
-        headerLeft: <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-                title='Drawer'
-                iconName='md-menu'
-                onPress={
-                    ()=>{
-                        navigationData.navigation.toggleDrawer();
-                    }
-                }/>
-        </HeaderButtons>,
-        headerRight: <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-                title='Cart'
-                iconName='md-cart'
-                onPress={
-                    ()=>{
-                        let f = navigationData.navigation.getParam('toCart');
-                        f();
-                    }
-                }/>
-        </HeaderButtons>
+        headerLeft: ()=>{
+            return(
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item
+                        title='Drawer'
+                        iconName='md-menu'
+                        onPress={
+                            ()=>{
+                                navigationData.navigation.toggleDrawer();
+                            }
+                        }/>
+                </HeaderButtons>
+            )
+        },
+        headerRight: ()=>{
+            return(
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item
+                        title='Cart'
+                        iconName='md-cart'
+                        onPress={
+                            ()=>{
+                                let f = navigationData.navigation.getParam('toCart');
+                                f();
+                            }
+                        }/>
+                </HeaderButtons>
+            )
+        }
     }   
 };
 

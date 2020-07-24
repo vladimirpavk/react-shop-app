@@ -1,4 +1,5 @@
 export const ADD_ORDER = "ADD ORDER";
+export const FETCH_ORDERS = "FETCH ORDERS";
 
 import Order from '../../models/Order';
 
@@ -23,6 +24,43 @@ export const AddOrder = (item)=>{
                         item.cartItem
                     )
                 })
+            }
+        )
+    }
+}
+
+export const FetchOrders = () => {
+    return dispatch=>{
+        return fetch('https://rn-store-app-73c67.firebaseio.com/orders.json',{
+            method: 'GET',
+            headers:{               
+                'content-type': 'application/json'
+            }
+        }).then(
+            response=>response.json()
+        ).then(
+            response=>{
+                console.log(response);
+
+                let newArray = [];
+                Object.keys(response).forEach(
+                    (key)=>{
+                        newArray.push(new Order(
+                            key,
+                            response[key].dateStart,
+                            response[key].status,
+                            response[key].cartItem
+                        ))
+                    }
+                );
+                dispatch({
+                    type: FETCH_ORDERS,
+                    payload: newArray
+                });
+            }
+        ).catch(
+            (error)=>{
+                console.log(error);
             }
         )
     }

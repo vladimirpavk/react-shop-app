@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { 
     View,
@@ -9,8 +9,16 @@ import {
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../UI/HeaderButton';
 
+import { connect } from 'react-redux';
+import * as OrdersActions from '../../store/actions/orders';
 
 const OrdersScreen = (props)=>{
+
+    useEffect(
+        ()=>{
+            props.fetchOrders;
+        }, []        
+    )
     return(
         <View style={styles.container}>
             <Text>This is orders screen</Text>
@@ -20,16 +28,20 @@ const OrdersScreen = (props)=>{
 
 OrdersScreen.navigationOptions = (navData)=>{
     return {        
-        headerLeft: <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-                title='Drawer'
-                iconName='md-menu'
-                onPress={
-                    ()=>{
-                        navData.navigation.toggleDrawer();
-                    }
-                }/>
-        </HeaderButtons>
+        headerLeft: ()=>{
+            return(
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item
+                        title='Drawer'
+                        iconName='md-menu'
+                        onPress={
+                            ()=>{
+                                navData.navigation.toggleDrawer();
+                            }
+                        }/>
+                </HeaderButtons>
+            )
+        }
     }
 }
 
@@ -41,4 +53,17 @@ const styles = StyleSheet.create({
     }
 })
 
-export default OrdersScreen;
+const mapStateToProps = (state)=>
+{
+    return{
+        'orders' : state.orders
+    }    
+}
+
+const mapDispatchToProps = (dispatch)=>{
+    return {
+        'fetchOrders' : dispatch(OrdersActions.FetchOrders())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersScreen);

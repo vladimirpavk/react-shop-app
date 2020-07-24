@@ -14,6 +14,12 @@ const reducer = (state=initialState, action)=>{
                 orders:[...state.orders, action.payload]
             }      
         }
+        case(OrdersActions.FETCH_ORDERS):{
+            return{
+                ...state,
+                orders: [...action.payload]
+            }
+        }
         default:
             return state;
     }
