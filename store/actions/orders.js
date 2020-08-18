@@ -39,9 +39,9 @@ export const FetchOrders = () => {
         }).then(
             response=>response.json()
         ).then(
-            response=>{
+            response=>{                
                 console.log(response);
-
+                
                 let newArray = [];
                 Object.keys(response).forEach(
                     (key)=>{

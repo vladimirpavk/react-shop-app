@@ -28,12 +28,13 @@ const ProductsOverviewScreen = (props)=>{
                 'toCart': navigateToCart
             });
         }, []
-    )   
+    );
+
     useEffect(
         ()=>{
             props.initProducts();
         }, []
-    )
+    );
     
     const productToCartClicked = (item)=>{    
         props.addToCart({

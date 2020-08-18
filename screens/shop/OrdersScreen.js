@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { 
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    FlatList
 } from 'react-native';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -12,16 +13,29 @@ import HeaderButton from '../../UI/HeaderButton';
 import { connect } from 'react-redux';
 import * as OrdersActions from '../../store/actions/orders';
 
+import OrderItem from '../../componenets/shop/OrderItem';
+
 const OrdersScreen = (props)=>{
 
     useEffect(
         ()=>{
-            props.fetchOrders;
+            props.fetchOrders();
         }, []        
-    )
+    );
+
     return(
-        <View style={styles.container}>
-            <Text>This is orders screen</Text>
+        <View style={styles.container}>    
+            <FlatList
+                data={props.orders}
+                keyExtractor={(item)=>{item.id}}
+                renderItem={
+                    (itemData)=>{
+                        <OrderItem
+                            item={itemData.item}
+                        />
+                    }
+                }
+            />        
         </View>
     )    
 }
@@ -62,7 +76,7 @@ const mapStateToProps = (state)=>
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        'fetchOrders' : dispatch(OrdersActions.FetchOrders())
+        'fetchOrders' : ()=>dispatch(OrdersActions.FetchOrders())
     }
 }
 
