@@ -39,9 +39,7 @@ export const FetchOrders = () => {
         }).then(
             response=>response.json()
         ).then(
-            response=>{                
-                console.log(response);
-                
+            response=>{                               
                 let newArray = [];
                 Object.keys(response).forEach(
                     (key)=>{
@@ -53,6 +51,7 @@ export const FetchOrders = () => {
                         ))
                     }
                 );
+                //console.log('actions/orders.js', newArray);
                 dispatch({
                     type: FETCH_ORDERS,
                     payload: newArray

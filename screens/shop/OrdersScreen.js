@@ -26,15 +26,17 @@ const OrdersScreen = (props)=>{
     return(
         <View style={styles.container}>    
             <FlatList
+            style={styles.flatListStyle}
                 data={props.orders}
-                keyExtractor={(item)=>{item.id}}
+                keyExtractor={item=>item.id}
                 renderItem={
-                    (itemData)=>{
-                        <OrderItem
-                            item={itemData.item}
-                        />
-                    }
-                }
+                    itemData=>{
+                        return(
+                            <OrderItem
+                                item={itemData.item}
+                            />
+                    )}
+                }                
             />        
         </View>
     )    
@@ -63,14 +65,18 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%',
+    },
+    flatListStyle:{
+        width: '100%'
     }
 })
 
 const mapStateToProps = (state)=>
 {
     return{
-        'orders' : state.orders
+        'orders' : state.orders.orders
     }    
 }
 
