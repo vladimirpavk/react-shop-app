@@ -20,6 +20,20 @@ const reducer = (state=initialState, action)=>{
                 orders: [...action.payload]
             }
         }
+        case(OrdersActions.UPDATE_ORDERS):{
+            const newArray = state.orders.map(
+                (item)=>{
+                    if(item.id === action.payload.id){
+                        return action.payload
+                    }
+                    return item;
+                }
+            )
+            return{             
+                ...state,
+                orders: [...newArray]   
+            }
+        }
         default:
             return state;
     }

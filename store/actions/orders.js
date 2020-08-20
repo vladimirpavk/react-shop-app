@@ -1,5 +1,6 @@
 export const ADD_ORDER = "ADD ORDER";
 export const FETCH_ORDERS = "FETCH ORDERS";
+export const UPDATE_ORDERS = "UPDATE ORDERS";
 
 import Order from '../../models/Order';
 
@@ -60,6 +61,22 @@ export const FetchOrders = () => {
         ).catch(
             (error)=>{
                 console.log(error);
+            }
+        )
+    }
+}
+
+export const UpdateOrders = (itemToUpdate)=>{
+    return dispatch=>{
+        fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${itemToUpdate.id}.json`, {
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'Application/json'
+            },
+            body: JSON.stringify(itemToUpdate)            
+        }).then(
+            (response)=>{
+                console.log(response);
             }
         )
     }
