@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 const OrderItem = (props)=>{
 
     const orderConfirmed = ()=>{
-        console.log('Order confirmed...');
+        //console.log('Order confirmed...');
         //props.item
         props.updateOrder(props.item);
     }
@@ -33,7 +33,8 @@ const OrderItem = (props)=>{
             </View>
             <View style={styles.containerRight}>
                 <Button
-                    title="Confirm Order"
+                    disabled={props.item.status==='In-Progress' ? false : true}
+                    title={props.item.status==='In-Progress' ? "Confirm Order" : 'Order delivered'}
                     onPress={()=>orderConfirmed()}
                 />
             </View>

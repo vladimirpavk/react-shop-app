@@ -68,15 +68,24 @@ export const FetchOrders = () => {
 
 export const UpdateOrders = (itemToUpdate)=>{
     return dispatch=>{
-        fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${itemToUpdate.id}.json`, {
+        const newItem = {
+            'cartItem': itemToUpdate.cartItem,
+            'dateStart': itemToUpdate.dateStart,
+            'status': 'Confirmed'
+        }
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${itemToUpdate.id}.json`, {
             method: 'PUT',
             headers:{
                 'Content-Type': 'Application/json'
             },
-            body: JSON.stringify(itemToUpdate)            
+            body: JSON.stringify(newItem)            
         }).then(
             (response)=>{
-                console.log(response);
+                //console.log(response);
+                dispatch({
+                    type: UPDATE_ORDERS,
+                    payload: {...itemToUpdate, 'status': 'Confirmed'}
+                })
             }
         )
     }
