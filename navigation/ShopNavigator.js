@@ -12,6 +12,8 @@ import OrdersScreen from '../screens/shop/OrdersScreen';
 import UserProductsScreen from '../screens/user/UserProductsScreen';
 import EditProductsScreen from '../screens/user/EditProductScreen';
 
+import AuthScreen from '../screens/user/AuthScreen';
+
 import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
@@ -68,6 +70,23 @@ const UserNavigation = createStackNavigator({
     navigationOptions:{
         drawerIcon: drawerConfig => <Ionicons name="md-settings" size={24} color="black" />
     },
+    defaultNavigationOptions:{
+        headerStyle: 
+        {
+            backgroundColor: Colors.primary
+        },
+        headerTintColor: 'white',
+        headerTitleStyle:{
+            fontFamily: 'roboto-bold',
+            fontWeight: 'bold',
+            fontSize: 25
+        }
+    }
+});
+
+const UserNavigation = createStackNavigator({
+    'UserAuth': UserAuth
+},{
     defaultNavigationOptions:{
         headerStyle: 
         {
