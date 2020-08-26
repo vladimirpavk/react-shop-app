@@ -13,3 +13,5 @@ Settings.js
 
 # macOS
 .DS_Store
+
+secureAPIKeys.js

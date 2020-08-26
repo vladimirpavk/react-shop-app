@@ -2,7 +2,10 @@ import React from 'react';
 
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { createAppContainer } from 'react-navigation';
+import {
+    createAppContainer,
+    createSwitchNavigator
+} from 'react-navigation';
 
 import ProductOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
@@ -84,13 +87,13 @@ const UserNavigation = createStackNavigator({
     }
 });
 
-const UserNavigation = createStackNavigator({
-    'UserAuth': UserAuth
+const AuthNavigation = createStackNavigator({
+    'UserAuth': AuthScreen
 },{
     defaultNavigationOptions:{
         headerStyle: 
         {
-            backgroundColor: Colors.primary
+            backgroundColor: Colors.primary        
         },
         headerTintColor: 'white',
         headerTitleStyle:{
@@ -105,9 +108,14 @@ const AppNavigation = createDrawerNavigator({
     'Products': ProductsNavigation,
     'Orders': OrdersNavigation,
     'Admin': UserNavigation
-})
+});
 
-export default createAppContainer(AppNavigation);
+const MainNavigation = createSwitchNavigator({
+    'Auth': AuthNavigation,
+    'App': AppNavigation
+});
+
+export default createAppContainer(MainNavigation);
 
 
 

@@ -10,6 +10,7 @@ import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import productsReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart';
 import ordersReducer from './store/reducers/orders';
+import userReducer from './store/reducers/user';
 import ReduxThunk from 'redux-thunk';
 
 import ShopNavigator from './navigation/ShopNavigator';
@@ -17,7 +18,8 @@ import ShopNavigator from './navigation/ShopNavigator';
 const rootReducer = combineReducers({
   products: productsReducer,
   cart: cartReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  user: userReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
