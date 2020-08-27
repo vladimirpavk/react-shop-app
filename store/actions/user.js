@@ -5,7 +5,7 @@ import { User } from '../../models/User';
 import { FirebaseWebAPIKey } from '../../secureAPIKeys';
 
 export const logUserIn = (email, password)=>{
-    console.log(FirebaseWebAPIKey);
+    //console.log(FirebaseWebAPIKey);
     
     return RegisterUser(
         email,
@@ -42,11 +42,15 @@ export const RegisterUser = (email, password, url)=>{
         ).then(
             (response)=>{
                 //console.log(response);
-                dispatch({
+                if(response.error){
+                    //console.log(response.error);
+                    throw new Error(response.error.message);
+                }                
+                return dispatch({
                     'type': LOG_USER_IN,
                     'payload': new User(response.idToken, response.email, response.localId, response.refreshToken)                    
                 });
             }
-        )
+        );
     }
 }

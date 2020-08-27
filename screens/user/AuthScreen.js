@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text,
     TextInput,
-    Button
+    Button,
+    ActivityIndicator
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -14,44 +15,86 @@ import * as UserActions from '../../store/actions/user';
 import { FirebaseWebAPIKey } from '../../secureAPIKeys';
 
 const AuthScreen = (props)=>{
-    const [email, setEmail] = useState('vladimirpavk@gmail.rs');
+    const [isActive, setIsActive] = useState(false);
+    //error
+    const [loginError, setLoginError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    //
+    const [email, setEmail] = useState('vladimirpa3vk@gmail.com');
     const [password, setPassword] = useState('observer123');
 
-    const loginButtonPressed = ()=>{
-        props.logUserIn(email, password);
+    const loginButtonPressed = async ()=>{
+        setIsActive(true);
+        try{
+            let response = await props.logUserIn(email, password);
+            setIsActive(false);
+            setLoginError(false);
+            setErrorMessage('');
+            //console.log('Activity finished...', response);
+          /*   if(!response.payload.idToken) setLoginError(true);
+            else setLoginError(false); */
+        }
+        catch(error){
+            console.log(error);            
+            setIsActive(false);
+            setLoginError(true);          ;
+            setErrorMessage(error);
+        }
     }
 
-    const signupButtonPressed = ()=>{
-       props.signUserIn(email, password);
+    const signupButtonPressed = async ()=>{
+        setIsActive(true);
+        try{
+            let response = await props.signUserIn(email, password);
+            setIsActive(false);
+            if(!response.payload.idToken) setLoginError(true);
+            else setLoginError(false);
+        }   
+        catch(error){
+            console.log(error);
+        }     
     }
+
+    const errorBlock=(
+        <View>
+            <Text style={styles.errorStyle}>Login failed...</Text> 
+            <Text style={styles.errorStyle}>{errorMessage}</Text>
+        </View>
+    );
 
     return(
         <View style={styles.container}>
-            <View style={styles.validationStyle}>
-                <Text style={styles.labelStyle}>Email</Text>
-                <TextInput
-                    style={styles.inputStyle}
-                    value={email}
-                    onChangeText={(value)=>{setEmail(value)}}
-                />
-                <Text style={styles.labelStyle}>Password</Text>
-                <TextInput 
-                    style={styles.inputStyle}
-                    value={password}
-                    onChangeText={(value)=>{setPassword(value)}}
-                    secureTextEntry={true}
-                />
-            </View>
-            <View style={styles.buttonContainer}>
-                <Button
-                    style={styles.buttonStyle}
-                    title="Sign Up"
-                    onPress={signupButtonPressed}/>
-                <Button
-                    style={styles.buttonStyle}
-                    title="Login"
-                    onPress={loginButtonPressed}/>
-            </View>
+            {
+                isActive ? <ActivityIndicator/> :
+                            <View style={styles.formContainer}>
+                                {loginError ? errorBlock : null }
+                                <View style={styles.validationStyle}>
+                                <Text style={styles.labelStyle}>Email</Text>
+                                <TextInput
+                                    style={styles.inputStyle}
+                                    value={email}
+                                    onChangeText={(value)=>{setEmail(value)}}
+                                />
+                                <Text style={styles.labelStyle}>Password</Text>
+                                <TextInput 
+                                    style={styles.inputStyle}
+                                    value={password}
+                                    onChangeText={(value)=>{setPassword(value)}}
+                                    secureTextEntry={true}
+                                />
+                            </View>
+                            <View style={styles.buttonContainer}>
+                                <Button
+                                    style={styles.buttonStyle}
+                                    title="Sign Up"
+                                    onPress={signupButtonPressed}/>
+                                <Button
+                                    style={styles.buttonStyle}
+                                    title="Login"
+                                    onPress={loginButtonPressed}/>
+                            </View>
+                        </View>
+            }            
         </View>
     );
 }
@@ -98,6 +141,12 @@ const styles = StyleSheet.create({
     buttonStyle:{
         fontSize: 24,
         fontWeight: 'bold'
+    },
+    errorStyle:{
+        color: 'red'
+    },
+    formContainer:{
+        flex: 1
     }
 });
 
