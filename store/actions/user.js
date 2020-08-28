@@ -43,7 +43,7 @@ export const RegisterUser = (email, password, url)=>{
             (response)=>{
                 //console.log(response);
                 if(response.error){
-                    //console.log(response.error);
+                    //console.log(response.error.message);
                     throw new Error(response.error.message);
                 }                
                 return dispatch({

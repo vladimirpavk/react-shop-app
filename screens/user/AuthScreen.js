@@ -30,15 +30,13 @@ const AuthScreen = (props)=>{
             setIsActive(false);
             setLoginError(false);
             setErrorMessage('');
-            //console.log('Activity finished...', response);
-          /*   if(!response.payload.idToken) setLoginError(true);
-            else setLoginError(false); */
+            props.navigation.navigate('App');
         }
-        catch(error){
-            console.log(error);            
+        catch(error){        
             setIsActive(false);
             setLoginError(true);          ;
-            setErrorMessage(error);
+            setErrorMessage(error.message);
+            
         }
     }
 
@@ -47,13 +45,17 @@ const AuthScreen = (props)=>{
         try{
             let response = await props.signUserIn(email, password);
             setIsActive(false);
-            if(!response.payload.idToken) setLoginError(true);
-            else setLoginError(false);
+            setLoginError(false);
+            setErrorMessage('');
+            props.navigation.navigate('App');
         }   
         catch(error){
-            console.log(error);
+            //console.log(error.Error);
+            setIsActive(false);
+            setLoginError(true);
+            setErrorMessage(error.message);
         }     
-    }
+    } 
 
     const errorBlock=(
         <View>
