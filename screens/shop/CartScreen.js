@@ -24,7 +24,8 @@ const CartScreen = (props)=>{
         props.addOrder({
             dateStart: Date.now(),
             status: 'In-Progress',
-            cartItem: props.cart.items
+            cartItem: props.cart.items,
+            userId: props.userId
         });
 
         props.clearCart();
@@ -96,7 +97,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state)=>{    
     return{
         'cart': state.cart,
-        'orders': state.orders
+        'orders': state.orders,
+        'userId': state.user.localId
     }
 }
 

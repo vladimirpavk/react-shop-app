@@ -20,7 +20,7 @@ const AuthScreen = (props)=>{
     const [loginError, setLoginError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     //
-    const [email, setEmail] = useState('vladimirpa3vk@gmail.com');
+    const [email, setEmail] = useState('vladimirpavk@gmail.com');
     const [password, setPassword] = useState('observer123');
 
     const loginButtonPressed = async ()=>{

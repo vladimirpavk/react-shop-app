@@ -4,7 +4,8 @@ import CartItem from '../../models/CartItem';
 
 const initialState = {
     items: [],
-    totalAmount : 0
+    totalAmount: 0,
+    itemsCount: 0
 }
 
 const reducer = (state=initialState, action)=>{
@@ -27,7 +28,8 @@ const reducer = (state=initialState, action)=>{
                 return{
                     ...state,
                     items: updatedQtyItem,
-                    totalAmount: +(state.totalAmount + action.payload.price).toFixed(2)
+                    totalAmount: +(state.totalAmount + action.payload.price).toFixed(2),
+                    itemsCount: state.itemsCount+1
                 }
             }
             else{
@@ -40,7 +42,8 @@ const reducer = (state=initialState, action)=>{
                                 action.payload.title,
                                 action.payload.qty                                
                             )],
-                    totalAmount: +(state.totalAmount+action.payload.price).toFixed(2)
+                    totalAmount: +(state.totalAmount+action.payload.price).toFixed(2),
+                    itemsCount: state.itemsCount+1
                 }
             }            
         }
@@ -55,13 +58,15 @@ const reducer = (state=initialState, action)=>{
 
             return{
                 items: updatedItems,
-                totalAmount: +(state.totalAmount-action.payload.qty*action.payload.price).toFixed(2)
+                totalAmount: +(state.totalAmount-action.payload.qty*action.payload.price).toFixed(2),
+                itemsCount: state.itemsCount-1
             }
         }
         case Action.CLEAR_CART:{
             return{
                 items: [],
-                totalAmount: 0
+                totalAmount: 0,
+                itemsCount: 0
             }
         }
         default:

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import {
     View,
     FlatList,
-    StyleSheet
+    StyleSheet,
+    Text
  } from 'react-native';
  
  import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -24,26 +25,29 @@ const ProductsOverviewScreen = (props)=>{
 
     useEffect(
         ()=>{
+            props.initProducts();
             props.navigation.setParams({
                 'toCart': navigateToCart
-            });
+            });            
         }, []
     );
 
     useEffect(
-        ()=>{
-            props.initProducts();
-        }, []
-    );
+        ()=>{   
+            props.navigation.setParams({
+                'cartItemsCount': props.cartItemsCount
+            });
+        }, [props.cartItemsCount]
+    )
     
-    const productToCartClicked = (item)=>{    
+    const productToCartClicked = (item)=>{           
         props.addToCart({
             id: item.id,
             price: item.price,
             title: item.title,
             qty:1
         });
-    }
+    }                       
 
     const productDetailClicked = (item)=>{
         props.navigation.navigate({
@@ -96,17 +100,21 @@ ProductsOverviewScreen.navigationOptions = (navigationData)=>
         },
         headerRight: ()=>{
             return(
-                <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                    <Item
-                        title='Cart'
-                        iconName='md-cart'
-                        onPress={
-                            ()=>{
-                                let f = navigationData.navigation.getParam('toCart');
-                                f();
-                            }
-                        }/>
-                </HeaderButtons>
+                <View style={styles.iconStyle}>
+                    <Text style={styles.cartCountStyle}>{navigationData.navigation.getParam('cartItemsCount')}</Text>                    
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item
+                            title='Cart'
+                            iconName='md-cart'
+                            onPress={
+                                ()=>{
+                                    let f = navigationData.navigation.getParam('toCart');
+                                    f();
+                                }
+                            }/>
+                    </HeaderButtons>
+                </View>
+               
             )
         }
     }   
@@ -118,12 +126,24 @@ const styles = StyleSheet.create({
       paddingTop: 10,
       paddingLeft: 10,
       paddingRight: 10
-    }    
+    },
+    iconStyle:{
+    },
+    cartCountStyle:{
+        position: 'absolute',
+        top: -15,
+        right: 10,
+        zIndex: 100,
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: 'black'
+    }
   });
 
 const mapStateToProps = (state)=>{
     return{
-        'products': state.products.availableProducts       
+        'products': state.products.availableProducts,
+        'cartItemsCount': state.cart.itemsCount
     }
 }
 
