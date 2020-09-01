@@ -16,6 +16,7 @@ import ProductItem from '../../componenets/shop/ProductItem';
 
 import * as CartActions from '../../store/actions/cart';
 import * as ProductActions from '../../store/actions/products';
+import * as UserActions from '../../store/actions/user';
 
 const ProductsOverviewScreen = (props)=>{
 
@@ -23,11 +24,18 @@ const ProductsOverviewScreen = (props)=>{
         props.navigation.navigate('Cart');
     }
 
+    const logout = ()=>{
+        //console.log('logout');
+        props.logOutUser();
+        props.navigation.navigate('Auth');
+    }
+
     useEffect(
         ()=>{
             props.initProducts();
             props.navigation.setParams({
-                'toCart': navigateToCart
+                'toCart': navigateToCart,
+                'logout': logout
             });            
         }, []
     );
@@ -103,6 +111,16 @@ ProductsOverviewScreen.navigationOptions = (navigationData)=>
                 <View style={styles.iconStyle}>
                     <Text style={styles.cartCountStyle}>{navigationData.navigation.getParam('cartItemsCount')}</Text>                    
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <Item 
+                            title='Logout'
+                            iconName='ios-log-out'
+                            onPress={
+                                ()=>{
+                                    let f = navigationData.navigation.getParam('logout');
+                                    f();
+                                }
+                            }
+                        />
                         <Item
                             title='Cart'
                             iconName='md-cart'
@@ -111,7 +129,7 @@ ProductsOverviewScreen.navigationOptions = (navigationData)=>
                                     let f = navigationData.navigation.getParam('toCart');
                                     f();
                                 }
-                            }/>
+                            }/>                                                
                     </HeaderButtons>
                 </View>
                
@@ -153,7 +171,8 @@ const mapDispatchToProps = (dispatch)=>{
             type: CartActions.ADD_ITEM,
             payload: item
         }),
-        'initProducts': ()=>dispatch(ProductActions.InitProducts())
+        'initProducts': ()=>dispatch(ProductActions.InitProducts()),
+        'logOutUser': ()=>dispatch({ type: UserActions.LOG_OUT_USER })
     }   
 }
 

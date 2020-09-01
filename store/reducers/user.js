@@ -12,6 +12,9 @@ const reducer = (state=initialState, action)=>{
                 ...action.payload
             }
         }
+        case(UserActions.LOG_OUT_USER):{
+            return {};
+        }
         default:{
             return state;            
         }

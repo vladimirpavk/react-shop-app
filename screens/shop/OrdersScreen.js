@@ -19,7 +19,7 @@ const OrdersScreen = (props)=>{
 
     useEffect(
         ()=>{
-            props.fetchOrders();
+            props.fetchOrders(props.userId);
         }, []        
     );
 
@@ -34,6 +34,7 @@ const OrdersScreen = (props)=>{
                         return(
                             <OrderItem
                                 item={itemData.item}
+                                userId={props.userId}
                             />
                     )}
                 }                
@@ -76,13 +77,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state)=>
 {
     return{
-        'orders' : state.orders.orders
+        'orders' : state.orders.orders,
+        'userId' : state.user.localId
     }    
 }
 
 const mapDispatchToProps = (dispatch)=>{
     return {
-        'fetchOrders' : ()=>dispatch(OrdersActions.FetchOrders())
+        'fetchOrders' : (userId)=>dispatch(OrdersActions.FetchOrders(userId))
     }
 }
 

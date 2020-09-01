@@ -6,7 +6,7 @@ import Order from '../../models/Order';
 
 export const AddOrder = (item)=>{
     return dispatch=>{
-        return fetch('https://rn-store-app-73c67.firebaseio.com/orders.json',{
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${item.userId}.json`,{
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -22,8 +22,7 @@ export const AddOrder = (item)=>{
                         response.name,
                         item.dateStart,
                         item.status,
-                        item.cartItem,
-                        item.userId
+                        item.cartItem
                     )
                 })
             }
@@ -31,9 +30,9 @@ export const AddOrder = (item)=>{
     }
 }
 
-export const FetchOrders = () => {
+export const FetchOrders = (userId) => {
     return dispatch=>{
-        return fetch('https://rn-store-app-73c67.firebaseio.com/orders.json',{
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${userId}.json`,{
             method: 'GET',
             headers:{               
                 'content-type': 'application/json'
@@ -67,14 +66,14 @@ export const FetchOrders = () => {
     }
 }
 
-export const UpdateOrders = (itemToUpdate)=>{
+export const UpdateOrders = (itemToUpdate, userId)=>{    
     return dispatch=>{
         const newItem = {
             'cartItem': itemToUpdate.cartItem,
             'dateStart': itemToUpdate.dateStart,
             'status': 'Confirmed'
         }
-        return fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${itemToUpdate.id}.json`, {
+        return fetch(`https://rn-store-app-73c67.firebaseio.com/orders/${userId}/${itemToUpdate.id}.json`, {
             method: 'PUT',
             headers:{
                 'Content-Type': 'Application/json'

@@ -12,10 +12,9 @@ import { connect } from 'react-redux';
 
 const OrderItem = (props)=>{
 
-    const orderConfirmed = ()=>{
-        //console.log('Order confirmed...');
-        //props.item
-        props.updateOrder(props.item);
+    const orderConfirmed = ()=>{    
+        //console.log(props.item, props.userId);
+        props.updateOrder(props.item, props.userId);
     }
 
     return(
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        'updateOrder': (order)=>dispatch(OrderActions.UpdateOrders(order))
+        'updateOrder': (order, userId)=>dispatch(OrderActions.UpdateOrders(order, userId))
     }
 }
 

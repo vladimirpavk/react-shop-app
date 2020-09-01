@@ -1,4 +1,5 @@
 export const LOG_USER_IN = 'LOG USER IN';
+export const LOG_OUT_USER = 'LOG_OUT_USER';
 
 import { User } from '../../models/User';
 

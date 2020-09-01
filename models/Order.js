@@ -3,7 +3,6 @@ export default class Order{
         this.id = id;
         this.dateStart = dateStart;
         this.status = status;
-        this.cartItem = cartItem;
-        this.userId = userId
+        this.cartItem = cartItem
     }
 }
